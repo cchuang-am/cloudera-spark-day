@@ -388,6 +388,14 @@
 						</code></pre>
 					</section>
 					<section>
+						<h5>PySpark 設定</h5>
+						<pre><code class="language-python">
+config = SparkConf() \
+	.setAppName(core_service.get_app_name()) \
+	.set("spark.sql.parquet.enableVectorizedReader", "false")
+						</code></pre>
+					</section>
+					<section>
 						<h5>PyArrow at Python 3.6</h5>
 						<img src="assets/pyarrow_error.png"/>
 					</section>
@@ -430,43 +438,44 @@
 					<section>
 						<h5>PySpark 風格</h5>
 						<pre><code class="language-python">
-	df_result = df_transactions.alias("transactions") \
-		.join(df_customers.alias("customers"), on=["customer_key"], how="inner") \
-		.join(df_accounts.alias("accounts"), on=["account_key"], how="inner") \
-		.join(df_accounts.alias("oppo_accounts"),
-				f.col("transactions.oppo_account_key")==f.col("oppo_accounts.account_key"),
-				how="left") \
-		.select("transactions.txn_key",
-				"customers.customer_id",
-				"accounts.account_no",
-				f.col("oppo_accounts.account_no").alias("oppo_account_no"),
-				"transactions.txn_date_time",
-				"transactions.txn_direction",
-				"transactions.txn_amount") \
-		.withColumn("txn_year_month", f.date_format("transactions.txn_date_time", "yyyyMM"))
+df_result = df_transactions.alias("transactions") \
+	.join(df_customers.alias("customers"), on=["customer_key"], how="inner") \
+	.join(df_accounts.alias("accounts"), on=["account_key"], how="inner") \
+	.join(df_accounts.alias("oppo_accounts"),
+			f.col("transactions.oppo_account_key")==f.col("oppo_accounts.account_key"),
+			how="left") \
+	.select("transactions.txn_key",
+			"customers.customer_id",
+			"accounts.account_no",
+			f.col("oppo_accounts.account_no").alias("oppo_account_no"),
+			"transactions.txn_date_time",
+			"transactions.txn_direction",
+			"transactions.txn_amount") \
+	.withColumn("txn_year_month", f.date_format("transactions.txn_date_time", "yyyyMM"))
 						</code></pre>	
 					</section>
 
 					<section>
 						<h5>套用 Koalas</h5>
 						<pre><code class="language-python">
-    df_customers = df_customers.to_koalas()
-    df_accounts = df_accounts.to_koalas()
-    df_transactions = df_transactions.to_koalas()
+df_customers = df_customers.to_koalas()
+df_accounts = df_accounts.to_koalas()
+df_transactions = df_transactions.to_koalas()
 
-    df_oppo_accounts = df_accounts.rename(columns={
-        "account_key": "oppo_account_key",
-        "account_no": "oppo_account_no"})
+df_oppo_accounts = df_accounts.rename(columns={
+	"account_key": "oppo_account_key",
+	"account_no": "oppo_account_no"})
 
-    df_result = ks.merge(df_transactions, df_customers, on="customer_key", how="inner")
-    df_result = ks.merge(df_result, df_accounts, on="account_key", how="inner")
-    df_result = ks.merge(df_result, df_oppo_accounts, on="oppo_account_key", how="left")
+df_result = ks.merge(df_transactions, df_customers, on="customer_key", how="inner")
+df_result = ks.merge(df_result, df_accounts, on="account_key", how="inner")
+df_result = ks.merge(df_result, df_oppo_accounts, on="oppo_account_key", how="left")
 
-    df_result = df_result[["txn_key", "customer_id", "account_no", "oppo_account_no", "txn_date_time", "txn_direction", "txn_amount"]]
+df_result = df_result[["txn_key", "customer_id", "account_no", "oppo_account_no",
+                       "txn_date_time", "txn_direction", "txn_amount"]]
 
-    df_result["txn_year_month"] = df_result["txn_date_time"].dt.strftime("%Y%m")
-	
-    return df_result.to_spark()
+df_result["txn_year_month"] = df_result["txn_date_time"].dt.strftime("%Y%m")
+
+return df_result.to_spark()
 						</code></pre>
 					</section>
 				</section>
