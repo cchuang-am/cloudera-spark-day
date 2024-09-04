@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Cloudera Spark Day - 一起動手用 Spark 處理 AML 場景下億級資料</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/am-cis.css">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h2>一起動手用 Spark 處理 AML 場景下億級資料</h2>
+				</section>
+
+				<section>
+					<h3>關於我</h3>
+					<div class="row">
+						<div class="column">
+							<h5>黃俊鈞</h5>
+							<ul>
+								<li><small>曾參與及帶領 10 人團隊完成電子公文交換系統開發建置</small></li>
+								<li><small>於林口智慧城市案,設計開發戰情室看板所使用之彙整資料 API</small></li>
+								<li><small>對於分散式系統亦有研究,論文以分散式系統之高可用性、資料一致性作為主軸,針對電力監控系統資料缺漏問題,提出解決方法</small></li>
+							</ul>
+						</div>
+						<div class="column">
+							<img src="https://avatars.githubusercontent.com/u/133316387?v=4"></img>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>Design Data-Intensive Applications</h3>
+					<img src="assets/ddia.jpg" width="40%"/>
+				</section>
+
+				<section>
+					<h3>反洗錢系統資料管線案</h3>
+				</section>
+
+				<section>
+					<div class="row">
+						<div class="column">
+							<h3>故事的背景</h3>
+						</div>
+						<div class="column">
+							
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>顧客行銷的資料特性</h3>
+					<div class="row">
+						<div class="column">
+							<img src="assets/marketing-customers.drawio.png" width="80%"/>
+						</div>
+						<div class="column">
+							<img src="assets/marketing-transactions.drawio.png" width="80%"/>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>反洗錢系統的資料特性</h3>
+					<img src="assets/amls.drawio.png" width="80%"/>
+				</section>
+
+				<section>
+					<h3>反洗錢系統的資料管線</h3>
+					<img src="assets/amls_2.drawio.png" width="40%"/>
+				</section>
+
+				<section>
+					<h3>鬼鴞說資料</h3>
+					<div class="row">
+						<div class="column">
+							<img src="assets/300x300bb.webp" width="75%"/>
+							<p><small>EP 2 | 在金融業百人編制的資料專案，<br>會發生什麼匪夷所思的事？<br>原來做資料專案也有祕訣？</small>
+							</small></p>
+						</div>
+						<div class="column">
+							<img class="qrcode" src="assets/podcast.png" width="80%"/>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>管線架構簡述</h3>
+				</section>
+
+				<section>
+					<h3>管線架構簡述</h3>
+					<h5>第一：下檔</h5>
+					<img src="assets/tomica.png" width="50%"/>
+				</section>
+
+				<section>
+					<h3>管線架構簡述</h3>
+					<div class="row">
+						<div class="column">
+							<h5>第二：精簡欄位</h5>
+							<ul>
+								<li>透過 SparkSQL 選取必須的欄位</li>
+								<li>最後大約 100 ~ 200 個</li>
+							</ul>
+						</div>
+						<div class="column">
+							<img src="assets/pipeline_1.drawio.png" width="40%"/>
+						</div>
+					</div>
+				</section>
+				
+				<section>
+					<h3>管線架構簡述</h3>
+					<div class="row">
+						<div class="column">
+							<h5>第三：實作邏輯</h5>
+							<ul>
+								<li>透過 SparkSQL 組織業務邏輯</li>
+								<li>包含 30 多個 UDF</li>
+								<li>形成 30 多張暫存表</li>
+							</ul>
+						</div>
+						<div class="column">
+							<img src="assets/pipeline_2.drawio.png" width="80%"/>
+						</div>
+					</div>
+				</section>
+				
+				<section>
+					<h3>管線架構簡述</h3>
+					<div class="row">
+						<div class="column">
+							<h5>第四：組合成品</h5>
+							<ul>
+								<li>透過 SparkSQL 將資料表 Union 起來</li>
+								<li>最後輸出 6 張資料表</li>
+							</ul>
+						</div>
+						<div class="column">
+							<img src="assets/pipeline_3.drawio.png" width="100%"/>
+						</div>
+					</div>
+				</section>
+				
+				<section>
+					<h3>Spark & CDP 的成功關鍵</h3>
+				</section>
+				
+				<section>
+					<section>
+						<h3>資料儲存與運算處理的整合</h3>
+					</section>
+					<section>
+						<h5>傳統的應用程式架構</h5>
+						<img src="assets/trad-arch.drawio.png" width="80%"/>
+					</section>
+					<section>
+						<h5>CDP 與 Hadoop 生態系架構</h5>
+						<img src="assets/arch.drawio.png"/>
+					</section>
+					<section>
+						<h5>造成瓶頸的網路</h5>
+						<img src="assets/trad-arch-bottle.drawio.png"/>
+					</section>
+				</section>
+				
+				<section>
+					<section>
+						<h3>叢集資源管理的支援性</h3>
+					</section>
+					<section>
+						<div class="row">
+							<div class="column">
+								<h5>單機思維</h5>
+								<img src="assets/cluster-single.drawio.png" width="65%"/>
+							</div>
+							<div class="column">
+								<h5>叢集思維</h5>
+								<img src="assets/cluster.drawio.png" width="65%"/>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="row">
+							<div class="column">
+								<h5>單機</h5>
+								<ul>
+									<li>Spark</li>
+									<li>Pandas</li>
+									<li>Polars</li>
+								</ul>
+							</div>
+							<div class="column">
+								<h5>叢集</h5>
+								<ul>
+									<li>Spark</li>
+									<li>Dask</li>
+									<li>不支援</li>
+								</ul>
+							</div>
+						</div>
+					</section>
+					<section>
+						<h5>叢集支援比較</h5>
+						<table>
+							<tr>
+								<th>&nbsp;</th>
+								<th>Spark</th>
+								<th>Dask</th>
+							</tr>
+							<tr>
+								<td>Pub Cloud</td>
+								<td>Yes</td>
+								<td>Yes</td>
+							</tr>
+							<tr>
+								<td>Standalone</td>
+								<td>Yes</td>
+								<td><span class="danger">Not Yet</span></td>
+							</tr>
+							<tr>
+								<td>K8s</td>
+								<td>Yes</td>
+								<td>Yes</td>
+							</tr>
+							<tr>
+								<td>Yarn</td>
+								<td>Yes</td>
+								<td><span class="danger">No</span></td>
+							</tr>
+						</table>
+					</section>
+				</section>
+				
+				<section>
+					<section>
+						<h3>高度相容性</h3>
+					</section>
+					<section>
+						<div class="row">
+							<div class="column">
+								<h5>CSV</h5>
+								<img src="assets/doc-csv.drawio.png" width="80%"/>
+							</div>
+							<div class="column">
+								<h5>Parquet</h5>
+								<img src="assets/doc-parquet.drawio.png" width="60%"/>
+							</div>
+						</div>
+					</section>
+					<section>
+						<h5>版本支援比較</h5>
+						<table>
+							<tr>
+								<th>&nbsp;</th>
+								<th>Spark</th>
+								<th>PyArrow</th>
+							</tr>
+							<tr>
+								<td>Java 8</td>
+								<td>Yes</td>
+								<td><span class="ignore">NA</span></td>
+							</tr>
+							<tr>
+								<td>Python 3.6</td>
+								<td>Yes</td>
+								<td><span class="danger">No</span></td>
+							</tr>
+							<tr>
+								<td>Python 3.7↑</td>
+								<td>Yes</td>
+								<td>Yes</td>
+							</tr>
+						</table>
+					</section>
+				</section>
+				
+				<section>
+					<section>
+						<h3>開發靈活性</h3>
+					</section>
+					<section>
+						<img src="assets/language-2.drawio.png" width="70%"/>
+					</section>
+				</section>
+				
+				<section>
+					<section>
+						<h3>使用了 Spark，然後呢？</h3>
+					</section>
+					<section>
+						<h5>真的每次都跑全量的交易資料嗎？</h5>
+					</section>
+					<section>
+						<h5>出了問題怎樣排查？</h5>
+					</section>
+				</section>
+				
+				<section>
+					<h3>實務現場經驗分享</h3>
+				</section>
+				
+				<section>
+					<h3>Partition</h3>
+					<pre><code class="language-python">
+    df_result.write \
+        .mode("overwrite") \
+        .format("parquet") \
+        .partitionBy("txn_year_month") \
+        .option("partitionOverwriteMode", "dynamic") \
+        .save(f"{OUTPUT_PATH}")
+					</code></pre>
+				</section>
+				
+				<section>
+					<section>
+						<h3>追蹤 Spark 執行的日誌</h3>
+						<ul>
+							<li>即時紀錄：YARN Application</li>
+							<li>歷史紀錄：Spark History Server</li>
+						</ul>
+					</section>
+				</section>
+				
+				<section>
+					<h3>今天的範例程式</h3>
+				</section>
+				
+				<section>
+					<h3>資料模型</h3>
+					<img src="assets/demo-ER.drawio.png" width="70%"/>
+				</section>
+				
+				<section>
+					<h3>程式位置</h3>
+					<div class="row">
+						<div class="column">
+							<h5>GitHub</h5>
+							<img src="assets/github-repo.png" width="80%"/>
+						</div>
+						<div class="column">
+							<h5>QR Code</h5>
+							<img class="qrcode" src="assets/github-url.png" width="80%"/>
+						</div>
+					</div>
+				</section>
+				
+				<section>
+					<h3>資料位置</h3>
+					<div class="row">
+						<div class="column">
+							<h5>Google Drive</h5>
+							<img src="assets/sample_parquet_dir.png" width="80%"/>
+						</div>
+						<div class="column">
+							<h5>QR Code</h5>
+							<img class="qrcode" src="assets/sample_parquet-url.png" width="80%"/>
+						</div>
+					</div>
+				</section>
+				
+				<section>
+					<section>
+						<h3>讀取 Parquet</h3>
+					</section>
+					<section>
+						<h5>Spark</h5>
+						<pre><code class="language-python">
+	def load_parquet(spark, path):
+		return spark.read.parquet(path)
+						</code></pre>
+					</section>
+					<section>
+						<h5>Pandas/Dask</h5>
+						<pre><code class="language-python">
+	def load_parquet(path):
+		return pd.read_parquet(path)
+						</code></pre>
+					</section>
+					<section>
+						<h5>PyArrow at Python 3.6</h5>
+						<img src="assets/pyarrow_error.png"/>
+					</section>
+				</section>
+				
+				<section>
+					<section>
+						<h3>調校 Spark 資源配置</h3>
+					</section>
+					<section>
+						<img src="assets/cluster-overview.png" width="100%"/>
+						<em><small>資料來源: <a href="https://spark.apache.org/docs/latest/cluster-overview.html">https://spark.apache.org/docs/latest/cluster-overview.html</a></small></em>
+					</section>
+					<section>
+						<h5>Spark 記憶體設定</h5>
+						<ul>
+							<li>spark.driver.memory</li>
+							<li>spark.executor.memory</li>
+						</ul>
+					</section>
+					<section>
+						<h5>Spark 核心數設定</h5>
+						<ul>
+							<li>spark.driver.cores</li>
+							<li>spark.executor.cores</li>
+						</ul>
+					</section>
+				</section>
+				
+				<section>
+					<section>
+						<h3>Pandas 風格</h3>
+					</section>
+
+					<section>
+						<h5>Koalas</h5>
+						<img src="assets/koalas.png" width="80%"/>
+					</section>
+
+					<section>
+						<h5>PySpark 風格</h5>
+						<pre><code class="language-python">
+	df_result = df_transactions.alias("transactions") \
+		.join(df_customers.alias("customers"), on=["customer_key"], how="inner") \
+		.join(df_accounts.alias("accounts"), on=["account_key"], how="inner") \
+		.join(df_accounts.alias("oppo_accounts"),
+				f.col("transactions.oppo_account_key")==f.col("oppo_accounts.account_key"),
+				how="left") \
+		.select("transactions.txn_key",
+				"customers.customer_id",
+				"accounts.account_no",
+				f.col("oppo_accounts.account_no").alias("oppo_account_no"),
+				"transactions.txn_date_time",
+				"transactions.txn_direction",
+				"transactions.txn_amount") \
+		.withColumn("txn_year_month", f.date_format("transactions.txn_date_time", "yyyyMM"))
+						</code></pre>	
+					</section>
+
+					<section>
+						<h5>套用 Koalas</h5>
+						<pre><code class="language-python">
+    df_customers = df_customers.to_koalas()
+    df_accounts = df_accounts.to_koalas()
+    df_transactions = df_transactions.to_koalas()
+
+    df_oppo_accounts = df_accounts.rename(columns={
+        "account_key": "oppo_account_key",
+        "account_no": "oppo_account_no"})
+
+    df_result = ks.merge(df_transactions, df_customers, on="customer_key", how="inner")
+    df_result = ks.merge(df_result, df_accounts, on="account_key", how="inner")
+    df_result = ks.merge(df_result, df_oppo_accounts, on="oppo_account_key", how="left")
+
+    df_result = df_result[["txn_key", "customer_id", "account_no", "oppo_account_no", "txn_date_time", "txn_direction", "txn_amount"]]
+
+    df_result["txn_year_month"] = df_result["txn_date_time"].dt.strftime("%Y%m")
+	
+    return df_result.to_spark()
+						</code></pre>
+					</section>
+				</section>
+
+				<section>
+					<h3>實際執行...</h3>
+				</section>
+
+				<section>
+					<section>
+						<h3>回饋小試</h3>
+					</section>
+					<section>
+						<div class="row">
+							<div class="column">
+								<p>剛剛用 PySpark 寫的這個範例，與下面的 SQL 是否有相同作用？</p>
+								<p><small>aka. 可以直接跑在 Spark 上</small></p>
+							</div>
+							<div class="column">
+								<img class="qrcode" src="assets/quiz-url.png" width="80%"/>
+							</div>
+						</div>
+					</section>					
+					<section>
+						<pre><code class="language-sql">
+	SELECT
+		transactions.transaction_key,
+		customers.customer_id,
+		accounts.account_no,
+		oppo.account_no AS oppo_account_no,
+		transactions.txn_date_time,
+		transactions.txn_direction,
+		transactions.txn_amount,
+		date_format(transactions.txn_date_time, 'yyyyMM') 
+			AS txn_year_month
+	FROM transactions
+	INNER JOIN customers
+	ON transactions.customer_key=customers.customer_key
+	INNER JOIN accounts
+	ON transactions.account_key=accounts.account_key
+	LEFT JOIN accounts AS oppo
+	ON transactions.oppo_account_key=oppo.account_key
+						</code></pre>
+					</section>
+				</section>
+				
+				<section>
+					<h3>謝謝各位</h3>
+				</section>
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
