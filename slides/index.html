@@ -17,18 +17,20 @@
 		<div class="reveal">
 			<div class="slides">
 				<section>
-					<h2>一起動手用 Spark 處理 AML 場景下億級資料</h2>
+					<h2>一起動手用 Spark<br>處理 AML 場景下的億級資料</h2>
+
+					<span><small>黃俊鈞 (C.C. Huang)</small></span>
 				</section>
 
 				<section>
 					<h3>關於我</h3>
 					<div class="row">
 						<div class="column">
-							<h5>黃俊鈞</h5>
+							<p>黃俊鈞 (C.C. Huang)</p>
 							<ul>
 								<li><small>曾參與及帶領 10 人團隊完成電子公文交換系統開發建置</small></li>
-								<li><small>於林口智慧城市案,設計開發戰情室看板所使用之彙整資料 API</small></li>
-								<li><small>對於分散式系統亦有研究,論文以分散式系統之高可用性、資料一致性作為主軸,針對電力監控系統資料缺漏問題,提出解決方法</small></li>
+								<li><small>於林口智慧城市大數據案，設計開發戰情室看板所使用之彙整資料 API</small></li>
+								<li><small>對於分散式系統亦有研究，論文以<br>分散式系統之高可用性、資料一致性<br>作為主軸，針對電力監控系統資料<br>缺漏問題，提出解決方法</small></li>
 							</ul>
 						</div>
 						<div class="column">
@@ -109,8 +111,8 @@
 						<div class="column">
 							<h5>第二：精簡欄位</h5>
 							<ul>
-								<li>透過 SparkSQL 選取必須的欄位</li>
-								<li>最後大約 100 ~ 200 個</li>
+								<li>透過 Spark SQL 選取<br>必須的欄位</li>
+								<li>最後大約 100 ~ 200 個<br>欄位</li>
 							</ul>
 						</div>
 						<div class="column">
@@ -125,7 +127,7 @@
 						<div class="column">
 							<h5>第三：實作邏輯</h5>
 							<ul>
-								<li>透過 SparkSQL 組織業務邏輯</li>
+								<li>透過 Spark SQL 組織<br>業務邏輯</li>
 								<li>包含 30 多個 UDF</li>
 								<li>形成 30 多張暫存表</li>
 							</ul>
@@ -142,7 +144,7 @@
 						<div class="column">
 							<h5>第四：組合成品</h5>
 							<ul>
-								<li>透過 SparkSQL 將資料表 Union 起來</li>
+								<li>透過 SparkSQL 將<br>資料表 Union 起來</li>
 								<li>最後輸出 6 張資料表</li>
 							</ul>
 						</div>
@@ -250,10 +252,12 @@
 						<div class="row">
 							<div class="column">
 								<h5>CSV</h5>
+								<p><small>Row-Based</small></p>
 								<img src="assets/doc-csv.drawio.png" width="80%"/>
 							</div>
 							<div class="column">
 								<h5>Parquet</h5>
+								<p><small>Column-Based</small></p>
 								<img src="assets/doc-parquet.drawio.png" width="60%"/>
 							</div>
 						</div>
@@ -326,7 +330,7 @@
 					<section>
 						<h3>追蹤 Spark 執行的日誌</h3>
 						<ul>
-							<li>即時紀錄：YARN Application</li>
+							<li>即時紀錄：Yarn Application</li>
 							<li>歷史紀錄：Spark History Server</li>
 						</ul>
 					</section>
@@ -396,7 +400,7 @@ config = SparkConf() \
 						</code></pre>
 					</section>
 					<section>
-						<h5>PyArrow at Python 3.6</h5>
+						<h5>PyArrow 在 Python 3.6 的錯誤訊息</h5>
 						<img src="assets/pyarrow_error.png"/>
 					</section>
 				</section>
@@ -406,6 +410,7 @@ config = SparkConf() \
 						<h3>調校 Spark 資源配置</h3>
 					</section>
 					<section>
+						<h5>Spark 叢集架構</h5>
 						<img src="assets/cluster-overview.png" width="100%"/>
 						<em><small>資料來源: <a href="https://spark.apache.org/docs/latest/cluster-overview.html">https://spark.apache.org/docs/latest/cluster-overview.html</a></small></em>
 					</section>
