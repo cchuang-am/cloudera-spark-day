@@ -405,3 +405,8 @@ section.has-light-background, section.has-light-background h1, section.has-light
 .reveal .qrcode {
   border: 1px solid #fff;
 }
+
+.reveal .copyright {
+  font-size: 0.45em;
+  color: #e6e6e6;
+}
